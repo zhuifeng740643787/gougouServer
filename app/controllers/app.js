@@ -9,17 +9,19 @@ var file = require('../common/file')
 
 exports.creations = function*(next) {
   var page = xss(this.query.page) || 1
-  var take = xss(this.query.take) || 5
-  var offset = (page - 1) * take
+  var take = page == 0 ? 2 : (xss(this.query.take) || 5)
+  var offset = page == 0 ? 0 : ((page - 1) * take)
+  var sort = page == 0 ? { 'meta.createAt': 1 } : { 'meta.createAt': -1 }
   var list = yield Creations.find({})
     .skip(offset)
     .limit(take)
-    .sort({ 'meta.createAt': '-1' })
+    .sort(sort)
     .exec()
-
+  var total = yield Creations.count({}).exec()
   this.body = {
     success: true,
-    data: list
+    data: list,
+    total: total
   }
   yield next
 }
