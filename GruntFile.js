@@ -1,8 +1,9 @@
 module.exports = function (grunt) {
   grunt.initConfig({
-    server: {
-       port: 9999,
-       base: '.'
+    nodemon: {
+      dev: {
+        script: 'app.js'
+      }
     },
     watch: {
       js: {
@@ -10,7 +11,7 @@ module.exports = function (grunt) {
           'app.js',
           'GruntFile.js'
         ],
-        tasks: ['server'],
+        tasks: ['nodemon'],
         options: {
           livereload: true,
           reload: true,
@@ -22,6 +23,7 @@ module.exports = function (grunt) {
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-watch');//监控文件改变
+  grunt.loadNpmTasks('grunt-nodemon');//启动服务
   // Default task(s).
   grunt.registerTask('default', ['watch']);
 }

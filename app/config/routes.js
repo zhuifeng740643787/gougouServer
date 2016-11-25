@@ -10,6 +10,8 @@ module.exports = function() {
 	})
 	
   router.get('/creations', AppCtrl.creations)
+  router.get('/comments', AppCtrl.comments)
+  router.get('/comment/add', AppCtrl.commentAdd)
 	router.get('/creations/add', AppCtrl.add)
 	router.get('/u/signup', UserCtrl.signup)
 

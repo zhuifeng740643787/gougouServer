@@ -4,14 +4,61 @@ var mongoose = require('mongoose')
 var xss = require('xss')
 var User = mongoose.model('User')
 var Creations = mongoose.model('Creations')
+var Comment = mongoose.model('Comment')
 var utils = require('../common/utils')
 var file = require('../common/file')
+var request = require('../common/request')
+var response = require('../common/response')
 
-exports.creations = function*(next) {
-  var page = xss(this.query.page) || 1
-  var take = page == 0 ? 2 : (xss(this.query.take) || 5)
-  var offset = page == 0 ? 0 : ((page - 1) * take)
-  var sort = page == 0 ? { 'meta.createAt': 1 } : { 'meta.createAt': -1 }
+exports.commentAdd = function * (next)
+
+{
+  var creationId = request.get(this, 'creationId')
+  try {
+    var creation = yield Creations.findOne({_id: creationId}).exec()
+  } catch (err) {
+    response.error(this, "视频ID错误")
+    return false
+  }
+
+  var title = utils.randomString(20, 100)
+
+  var params = {
+    creationId: mongoose.Types.ObjectId(creationId),
+    comment: {
+      content: utils.randomString(20, 100),
+    },
+    userId: mongoose.Types.ObjectId("583292076dad870603731640"),
+  }
+  var comment = new Comment(params)
+  try {
+    comment = yield comment.save()
+  } catch (err) {
+    console.log(err)
+    response.error(this, "评论失败")
+    return false
+  }
+  response.success(this)
+  yield next
+}
+
+exports.comments = function * (next)
+{
+  var page = request.get(this, 'page', 1)
+  var creationId = request.get(this, 'creationId', 0)
+  var list = yield Comment.find({creationId: creationId})
+              .populate('userId', 'phoneNumber avatar')
+              .exec()
+  response.success(this, list)
+  yield next
+}
+
+exports.creations = function * (next)
+{
+  var page = request.get('page', 1)
+  var take = request.get('take', 5)
+  var offset = (page - 1) * take
+  var sort = {'meta.createAt': -1}
   var list = yield Creations.find({})
     .skip(offset)
     .limit(take)
@@ -26,7 +73,8 @@ exports.creations = function*(next) {
   yield next
 }
 
-exports.add = function*(next) {
+exports.add = function * (next)
+{
   var title = utils.randomString(20, 100)
 
   var params = {
@@ -45,7 +93,7 @@ exports.add = function*(next) {
       }, {
         userId: mongoose.Types.ObjectId('5833b5e521d31d1413576d67'),
         createdAt: Date.now(),
-      }, ]
+      },]
     }
   }
   var creations = new Creations(params)
