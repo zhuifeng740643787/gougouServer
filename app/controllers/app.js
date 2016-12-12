@@ -11,7 +11,6 @@ var request = require('../common/request')
 var response = require('../common/response')
 
 exports.commentAdd = function * (next)
-
 {
   var creationId = request.get(this, 'creationId')
   try {
@@ -44,19 +43,31 @@ exports.commentAdd = function * (next)
 
 exports.comments = function * (next)
 {
-  var page = request.get(this, 'page', 1)
+  var page = parseInt(request.get(this, 'page', 1))
+  var take = parseInt(request.get(this, 'take', 5))
+  var offset = (page - 1) * take
+  var sort = {'meta.createAt': -1}
   var creationId = request.get(this, 'creationId', 0)
-  var list = yield Comment.find({creationId: creationId})
-              .populate('userId', 'phoneNumber avatar')
-              .exec()
+  try{
+    var list = yield Comment.find({creationId: creationId})
+                .skip(offset)
+                .limit(take)
+                .sort(sort)
+                .populate('userId', 'phoneNumber avatar')
+                .exec()
+  }catch(error){
+    console.log(error)
+    response.error(this, '加载失败')
+    return false
+  }
   response.success(this, list)
   yield next
 }
 
 exports.creations = function * (next)
 {
-  var page = request.get('page', 1)
-  var take = request.get('take', 5)
+  var page = parseInt(request.get(this,'page', 1))
+  var take = parseInt(request.get(this,'take', 5))
   var offset = (page - 1) * take
   var sort = {'meta.createAt': -1}
   var list = yield Creations.find({})

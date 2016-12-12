@@ -7,9 +7,10 @@ var mongoose = require('mongoose')
 var db = 'mongodb://localhost/gougou-app'
 mongoose.Promise = require('bluebird')
 mongoose.connect(db)
+global._global = require('./app/common/global')
 
 var models_path = path.join(__dirname, '/app/models')
-var walk = function(modelPath) {
+var loadModels = function(modelPath) {
   fs
   	.readdirSync(modelPath)
   	.forEach(function(file){
@@ -20,12 +21,12 @@ var walk = function(modelPath) {
   				require(filePath)
   			}
   		} else if(stat.isDirectory()){
-  			walk(filePath)
+  			loadModels(filePath)
   		}
   	})
 }
 
-walk(models_path)
+loadModels(models_path)
 
 var koa = require('koa')
 var logger = require('koa-logger')

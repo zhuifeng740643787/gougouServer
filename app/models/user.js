@@ -1,20 +1,37 @@
 'use strict'
 
 var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
 var UserSchema = new mongoose.Schema({
-  phoneNumber: {
+  mobile: {
     unique: true,
-    type: String,
+    type: Number,
   },
-  areaCode: String,
-  verifyCode: String,
-  accessToken: String,
-  nickname: String,
-  gender: String,
-  breed: String,
-  age: String,
-  avatar: String,
+  status: {
+    type: Number,
+    enum: [
+      _global.ENABLE,
+      _global.DISABLE
+    ], //1=可用 0=不可用
+  }, //状态 1=启用 0=禁用
+  avatar: String, //头像
+  city: {
+    type: Schema.Types.ObjectId,
+    ref: 'City'
+  },
+  accessToken: String, //访问token
+  nickname: String, //昵称
+  gender: {
+    type: Number,
+    enum: [0, 1, 2], //0=未设置 1=男 2=女
+  }, //性别
+  age: {
+    type: Number,
+    max: 120,
+    min: 0,
+  }, //年龄
+  desc: String, //简介
   meta: {
     createAt: {
       type: Date,
@@ -27,13 +44,11 @@ var UserSchema = new mongoose.Schema({
   }
 })
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
   if (!this.isNew) {
     this.meta.updateAt = Date.now()
   }
   next()
 })
 
-var UserModel = mongoose.model('User', UserSchema)
-
-module.exports = UserModel
+module.exports = mongoose.model('User', UserSchema)
