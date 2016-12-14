@@ -40,9 +40,11 @@ var VerifyCodeSchema = new mongoose.Schema({
 })
 
 VerifyCodeSchema.pre('save', function (next) {
-  if (!this.name) {
-    this.meta.updateAt = Date.now()
+  var now = Date.now()
+  if (this.isNew) {
+    this.meta.createAt = now
   }
+  this.meta.updateAt = now
   next()
 })
 

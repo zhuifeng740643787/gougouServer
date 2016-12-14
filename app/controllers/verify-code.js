@@ -28,7 +28,6 @@ exports.image = function *(next) {
     status: _global.ENABLE,//使用状态
     content: captcha.text,
   }
-  console.log(captcha.text)
   var verifyCode = new VerifyCode(params)
   try{
     yield verifyCode.save()
@@ -36,6 +35,7 @@ exports.image = function *(next) {
     console.log(err)
     return response.error(this, "获取失败")
   }
+  console.log(verifyCode)
   delete captcha.text
   response.success(this, {captcha: captcha})
   yield next
@@ -49,7 +49,7 @@ exports.sms = function *(next) {
   }
   var verifyCode = yield VerifyCode.findOne({mobile: mobile}).sort({'meta.createAt': -1}).exec()
   console.log(verifyCode)
-  if(!(verifyCode && verifyCode.status == _global.ENABLE && verifyCode.content == captcha)) {
+  if(!(verifyCode && verifyCode.status == _global.ENABLE && verifyCode.content.toLowerCase() == captcha.toLowerCase())) {
     return response.error(this, '验证码错误')
   }
   verifyCode.status = _global.DISABLE

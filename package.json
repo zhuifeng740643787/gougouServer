@@ -21,6 +21,7 @@
     "node-uuid": "^1.4.7",
     "qiniu": "^6.1.13",
     "randomstring": "^1.1.5",
+    "sleep": "^5.0.0",
     "speakeasy": "^2.0.0",
     "uuid": "^3.0.0",
     "xmlhttprequest": "^1.8.0",

@@ -14,7 +14,7 @@ exports.success = function (cxt, data, extras) {
 exports.error = function (cxt, errorMsg, extras) {
   var ret = {}
   ret.success = false
-  ret.error = errorMsg === undefined ? "error" : errorMsg
+  ret.message = errorMsg === undefined ? "error" : errorMsg
   if(extras !== undefined) {
     ret.extras = extras
   }

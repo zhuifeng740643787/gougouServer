@@ -57,9 +57,11 @@ ConditionCommentSchema.index({"meta.createAt": -1})
 ConditionCommentSchema.index({"creationId": 1})
 
 ConditionCommentSchema.pre('save', function (next) {
-  if(!this.isNew){
-    this.meta.updateAt = Date.now()
+  var now = Date.now()
+  if (this.isNew) {
+    this.meta.createAt = now
   }
+  this.meta.updateAt = now
   next()
 })
 

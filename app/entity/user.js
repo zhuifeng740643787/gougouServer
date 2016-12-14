@@ -8,7 +8,6 @@ var file = require('../common/file')
 module.exports = {
   checkMobileExists: function *(mobile) {
     var user = yield User.findOne({mobile: mobile}).exec()
-    console.log(mobile, user)
     return user ? true : false
   },
   info: function *(id) {

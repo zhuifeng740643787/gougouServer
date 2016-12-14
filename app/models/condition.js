@@ -61,9 +61,11 @@ var ConditionSchema = new Schema({
 ConditionSchema.index({ "meta.createAt": -1 })
 
 ConditionSchema.pre('save', function(next) {
-  if (!this.isNew) {
-    this.meta.updateAt = Date.now()
+  var now = Date.now()
+  if (this.isNew) {
+    this.meta.createAt = now
   }
+  this.meta.updateAt = now
   next()
 })
 

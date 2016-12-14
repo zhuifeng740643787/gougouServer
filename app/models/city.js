@@ -29,9 +29,11 @@ var CitySchema = new mongoose.Schema({
 })
 
 CitySchema.pre('save', function (next) {
-  if (!this.name) {
-    this.meta.updateAt = Date.now()
+  var now = Date.now()
+  if (this.isNew) {
+    this.meta.createAt = now
   }
+  this.meta.updateAt = now
   next()
 })
 
