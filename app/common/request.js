@@ -1,8 +1,9 @@
 'use strict'
 
 var xss = require('xss')
+var _ = require('lodash')
 
-exports.get = function(cxt, key, defaultVal){
+exports.get = function(cxt, key, defaultVal) {
   var value = cxt.query !== undefined && cxt.query[key] !== undefined 
               ? xss(cxt.query[key]) 
               : (cxt.body !== undefined && cxt.body[key]!== undefined ? xss(cxt.body[key]): null)
@@ -13,4 +14,8 @@ exports.get = function(cxt, key, defaultVal){
     return defaultVal 
   }
   return null
+}
+
+exports.all = function(cxt) {
+  return _.merge(cxt.query, cxt.body)
 }

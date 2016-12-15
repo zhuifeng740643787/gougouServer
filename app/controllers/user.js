@@ -3,10 +3,10 @@
 var mongoose = require('mongoose')
 var xss = require('xss')
 var User = mongoose.model('User')
+var UserStatistics = mongoose.model('UserStatistics')
 var VerifyCode = mongoose.model('VerifyCode')
 var sms = require('../service/sms')
-var uuid = require('uuid')
-var md5 = require('md5')
+
 var utils = require('../common/utils')
 var request = require('../common/request')
 var response = require('../common/response')
@@ -29,15 +29,16 @@ exports.register = function*(next) {
   if (!(verifyCode && verifyCode.status == _global.ENABLE && verifyCode.content == smsCode)) {
     return response.error(this, '验证码有误')
   }
-  verifyCode.status == _global.DISABLE
+  verifyCode.status = _global.DISABLE
   if ((yield UserEntity.checkMobileExists(mobile))) {
     return response.error(this, '手机号已被使用')
   }
   var user = new User({
     mobile: mobile,
     status: _global.ENABLE,
-    password: md5(password),
-    accessToken: uuid.v4(), //访问token
+    password: utils.makePassword(password),
+    accessToken: utils.makeAccessToken(), //访问token
+    nickname: utils.randomString(8,20), //访问token
   })
   try {
     yield verifyCode.save()
@@ -53,15 +54,27 @@ exports.register = function*(next) {
     console.log(err)
     return response.error(this, '注册失败')
   }
-  response.success(this, { data: UserEntity.info(user)})
+  var userInfo = yield UserEntity.info(user)
+  response.success(this, userInfo)
   yield next
 }
 
 exports.login = function*(next) {
+  var userName = request.get(this, 'userName')
+  var password = request.get(this, 'password')
 
-  this.body = {
-    success: true
+  if (!utils.checkMobile(userName) || !utils.checkPassword(password)) {
+    return response.error(this, '信息填写有误')
   }
+  var user = yield User.findOne({
+    mobile: userName,
+    status: _global.ENABLE,
+  }).sort({ 'meta.createAt': -1 }).exec()
+  if(!user || user.password != utils.makePassword(password)) {
+    return response.error(this, '用户名或密码错误')
+  }
+  var userInfo = yield UserEntity.info(user)
+  response.success(this, userInfo)
   yield next
 }
 exports.info = function*(next) {
@@ -74,7 +87,7 @@ exports.info = function*(next) {
     return response.error(this, '访问失败')
   }
   var userInfo = yield UserEntity.info(user)
-  response.success(this, {data: userInfo})
+  response.success(this, userInfo)
   yield next
 }
 exports.conditions = function*(next) {

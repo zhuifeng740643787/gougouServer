@@ -21,7 +21,7 @@ module.exports = function() {
   router.get('/user/conditions', UserCtrl.conditions) //用户发布过的
   router.get('/user/collects', UserCtrl.collects) // 用户收藏
   router.get('/user/fans', UserCtrl.fans) // 用户粉丝
-  router.get('/user/attention/list', UserCtrl.attentions) // 用户关注列表
+  router.get('/user/attentions', UserCtrl.attentions) // 用户关注列表
   router.get('/user/attention/add', UserCtrl.addAttention) // 用户关注
   //状态
   router.get('/condition/add', ConditionCtrl.add)

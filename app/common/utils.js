@@ -2,7 +2,8 @@
 var randomstring = require('randomstring')
 var file = require('./file')
 var Canvas = require('canvas')
-
+var md5 = require('md5')
+var uuid = require('uuid')
 /*
   generate(options)
     length - the length of the random string. (default: 32) [OPTIONAL]
@@ -52,6 +53,14 @@ exports.checkPassword = function(password) {
   }
 
   return /^\w{8,20}$/.test(password)
+}
+
+exports.makePassword = function(password) {
+  return md5(password)
+}
+
+exports.makeAccessToken = function() {
+  return uuid.v4()
 }
 
 exports.makeCaptcha = function() {

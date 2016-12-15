@@ -11,10 +11,15 @@ var UserSchema = new mongoose.Schema({
   status: {
     type: Number,
     enum: [
-      _global.ENABLE,
+      _global.ENABLE, 
       _global.DISABLE
     ], //1=可用 0=不可用
   }, //状态 1=启用 0=禁用
+  password: {
+    type: String,
+    maxLength: 32,
+    minLength: 32, 
+  },//密码 md5
   avatar: String, //头像
   city: {
     type: Schema.Types.ObjectId,

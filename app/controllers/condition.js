@@ -3,6 +3,7 @@
 var mongoose = require('mongoose')
 var Condition = mongoose.model('Condition')
 var request = require('../common/request')
+var response = require('../common/response')
 
 exports.add = function *(next) {
   this.body = {
@@ -11,9 +12,7 @@ exports.add = function *(next) {
   yield next
 }
 exports.list = function *(next) {
-  this.body = {
-    success: true
-  }
+  response.success(this, []) 
   yield next
 }
 exports.detail = function *(next) {

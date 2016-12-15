@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
+var UserStatistics = mongoose.model('UserStatistics')
 var utils = require('../common/utils')
 var file = require('../common/file')
 
@@ -20,6 +21,7 @@ module.exports = {
     if(!user || user.status != _global.ENABLE) {
       return false
     }
+    var userStatistics = yield UserStatistics.findOne({userId: mongoose.Types.ObjectId(user._id)})
     return {
       mobile: user.mobile,
       avatar: user.avatar || file.defaultAvatar(),//头像
@@ -28,7 +30,10 @@ module.exports = {
       nickname: user.nickname || '',//昵称
       gender: user.gender || 0,//性别
       age: user.age || 0,//年龄
-      desc: user.desc || '',//简介
+      desc: user.desc || '',//简介,
+      attentionNumber: userStatistics.attentionNumber || 0,
+      fansNumber: userStatistics.fansNumber || 0,
+      collectConditionNumber: userStatistics.collectConditionNumber || 0,
     }
   }
 }
