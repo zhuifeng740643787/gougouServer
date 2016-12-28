@@ -1,0 +1,42 @@
+分类：
+  热点  news_hot
+  视频  video
+  图片  news_image
+  段子  essay_joke
+  社会  news_society
+  娱乐  news_entertainment
+  科技  news_tech
+  体育  news_sports
+  汽车  news_car
+  财经  news_finance
+  搞笑  funny
+  军事  news_military
+  国际  news_world
+  时尚  news_fashion
+  旅游  news_travel
+  探索  news_discovery
+  育儿  news_baby
+  养生  news_regimen
+  故事  news_story
+  美文  news_essay
+  游戏  news_game
+  历史  news_history
+  美食  news_food
+
+
+
+
+-- 推荐
+http://www.toutiao.com/api/pc/feed/?category=__all__&utm_source=toutiao&widen=1&max_behot_time=1482459622&max_behot_time_tmp=1482459622&as=A1850815CC78D0F&cp=585CF84D300F4E1
+http://www.toutiao.com/api/pc/feed/?category=__all__&utm_source=toutiao&widen=1&max_behot_time=1482457346&max_behot_time_tmp=1482457346&as=A1B59865EC28FA5&cp=585C088F7AE54E1
+http://www.toutiao.com/api/pc/feed/?category=__all__&utm_source=toutiao&widen=1&max_behot_time=1482454646&max_behot_time_tmp=1482454646&as=A13598D58C89067&cp=585C9920C6F72E1
+http://www.toutiao.com/api/pc/feed/?category=__all__&utm_source=toutiao&widen=1&max_behot_time=1482451946&max_behot_time_tmp=1482451946&as=A19538559C7906A&cp=585CA9F0866AFE1
+http://www.toutiao.com/api/pc/feed/?category=__all__&utm_source=toutiao&widen=1&max_behot_time=1482449246&max_behot_time_tmp=1482449246&as=A1A578156C3906C&cp=585CA980E60CEE1
+
+-- 热点
+http://www.toutiao.com/api/pc/feed/?category=news_hot&utm_source=toutiao&widen=1&max_behot_time=0&max_behot_time_tmp=0-+&as=A1E558B54CE9217&cp=585C69C2C177FE1  1482458719
+http://www.toutiao.com/api/pc/feed/?category=news_hot&utm_source=toutiao&widen=1&max_behot_time=1482458719&max_behot_time_tmp=1482458719&as=A1E5A8153C9923D&cp=585C0942538DDE1  1482456619
+
+
+
+http://m.toutiao.com/list/?tag=__all__&ac=wap&count=20&format=json_raw&as=A1A5D885ACFCAEA&cp=585C7CAA0EEAAE1&min_behot_time=0

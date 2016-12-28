@@ -14,13 +14,45 @@ var ConditionSchema = new Schema({
   },
   status: {
     type: Number,
+    default: _global.ENABLE,
     enum: [
       _global.ENABLE, 
       _global.DISABLE
     ],
   },//状态 1=启用 0=禁用
+  source: String,//来源 头条
+  toutiao: {
+    category: String,
+    categoryChinese: String,
+    imageUrl: String,//封面图
+    isAd: {
+      type: Boolean,
+      default: false,
+    },
+    title: String,
+    imageList: [
+      {uri: String}
+    ],
+    behotTime: Number,
+    hasGallery: {
+      type: Boolean,
+      default: false,
+    },
+    gallaryImageCount: Number,
+    groupId: {
+      type: String,
+      unique: true
+    },
+    sourceUrl: String,//资源url
+    mediaName: String,//来自
+    mediaAvatarUrl: String,
+    mediaUrl: String,//媒体页面id
+    videoDurationStr: String,
+  },
+  toutiaoOriginal: Schema.Types.Mixed,
   type: {
     type: Number,
+    default: _global.CONDITION_TYPE_IMAGE,
     enum: [
       _global.CONDITION_TYPE_IMAGE,
       _global.CONDITION_TYPE_VIDEO,
@@ -35,7 +67,8 @@ var ConditionSchema = new Schema({
       height: Number,
     }
   ],
-  city: {
+  mobile: String,
+  cityId: {
     type: Schema.Types.ObjectId,
     ref: 'City',
   },
@@ -68,5 +101,6 @@ ConditionSchema.pre('save', function(next) {
   this.meta.updateAt = now
   next()
 })
+
 
 module.exports = mongoose.model('Condition', ConditionSchema)

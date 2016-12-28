@@ -9,8 +9,10 @@ var CitySchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 10,
   },
+  desc: String,
   status: {
     type: Number,
+    default: _global.ENABLE,
     enum: [
       _global.ENABLE, 
       _global.DISABLE, 

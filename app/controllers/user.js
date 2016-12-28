@@ -49,7 +49,7 @@ exports.register = function*(next) {
       fansNumber: 0,//粉丝个数
       collectConditionNumber: 0,//收藏的个数
     })
-    userStatistics.save()
+    yield userStatistics.save()
   } catch (err) {
     console.log(err)
     return response.error(this, '注册失败')

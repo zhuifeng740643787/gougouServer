@@ -1,28 +1,29 @@
 'use strict'
 
 var mongoose = require('mongoose')
-
-var ConditionTypeSchema = new mongoose.Schema({
+var Schema = mongoose.Schema
+var CategorySchema = new Schema({
   name: {
     unique: true,
     type: String,
-    maxlength: 6,
-    minlength: 2,
   },
+  chineseName: String,
   status: {
     type: Number,
     enum: [
       _global.ENABLE,
       _global.DISABLE,
     ],
+    default: _global.ENABLE,
   },//状态 1=启用 0=禁用
   isHot: {
     type: Number,
     enum: [
-      _global.HAD,
-      _global.CANCEL,
+      _global.ENABLE,
+      _global.DISABLE,
     ],
-  },//是否为hot
+    default: _global.DISABLE
+  },//是否为hot，小红点
   meta: {
     createAt: {
       type: Date,
@@ -35,7 +36,7 @@ var ConditionTypeSchema = new mongoose.Schema({
   }
 })
 
-ConditionTypeSchema.pre('save', function (next) {
+CategorySchema.pre('save', function (next) {
   var now = Date.now()
   if (this.isNew) {
     this.meta.createAt = now
@@ -44,4 +45,4 @@ ConditionTypeSchema.pre('save', function (next) {
   next()
 })
 
-module.exports = mongoose.model('ConditionType', ConditionTypeSchema)
+module.exports = mongoose.model('Category', CategorySchema)

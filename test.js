@@ -84,11 +84,20 @@ function ajaxGetAsync(url) {
   });
 }
 
-ajaxGetAsync('http://localhost:9999/api/test?i=1')
-  .then((data) => {
-    return ajaxGetAsync('http://localhost:9999/api/test12?i=2')
-  }).then((data) => {
-    console.log(data)
-  }).catch((error) => {
-    console.log(error)
-  })
+// ajaxGetAsync('http://localhost:9999/api/test?i=1')
+// .then((data) => {
+//   return ajaxGetAsync('http://localhost:9999/api/test12?i=2')
+// }).then((data) => {
+//   console.log(data)
+// }).catch((error) => {
+//   console.log(error)
+// })
+
+
+
+
+
+
+
+
+

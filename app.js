@@ -39,7 +39,7 @@ var app = koa()
 app.keys = ['gougou'] //session加密用的key
 app.use(logger())
 app.use(session(app))
-app.use(bodyparser())
+app.use(bodyparser({jsonLimit: '10mb'}))
 
 
 var router = require('./app/config/routes')()
@@ -48,6 +48,10 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
 
+app.on('error', function(err, ctx) {
+  console.log(err)
+  log.err('server error', err, ctx)
+})
 
 app.listen(9999)
 
